@@ -10,7 +10,7 @@ load_dotenv()
 # Create bot with command prefix and intents
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents)
 
 @bot.event
 async def on_ready():
@@ -29,7 +29,7 @@ async def on_message(message):
         # Reply with the message
         await message.reply('Hello, I am busy')
     
-    # Process other commands if any
+    # Process commands
     await bot.process_commands(message)
 
 # Run the bot with token from .env
