@@ -1,6 +1,11 @@
 import discord
 from discord.ext import commands
 import asyncio
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Create bot with command prefix and intents
 intents = discord.Intents.default()
@@ -27,5 +32,5 @@ async def on_message(message):
     # Process other commands if any
     await bot.process_commands(message)
 
-# Run the bot
-bot.run('YOUR_DISCORD_BOT_TOKEN_HERE')
+# Run the bot with token from .env
+bot.run(os.getenv('DISCORD_BOT_TOKEN'))
