@@ -38,7 +38,7 @@ async def on_message(message):
         dmed_users.add(message.author.id)
     
     # Check if the bot is mentioned in the message
-    if bot.user.mentioned_in(message) and is_afk:
+    if bot.user in message.mentions and is_afk:
         # Wait 15 seconds
         await asyncio.sleep(15)
         # Reply with the message
