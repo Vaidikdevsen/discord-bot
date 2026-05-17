@@ -22,24 +22,7 @@ cd discord-bot
 ```bash
 pip install -r requirements.txt
 ```
-
-### 3. Create a Discord Bot
-
-1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
-2. Click "New Application" and give it a name
-3. Go to "Bot" section and click "Add Bot"
-4. Under "TOKEN", click "Copy" to copy your bot token
-5. Go to "OAuth2" > "URL Generator"
-6. Select scopes: `bot`
-7. Select permissions:
-   - Send Messages
-   - Read Message History
-   - Mention @everyone, @here, and All Roles
-   - Connect (to voice channels)
-   - Speak (in voice channels)
-8. Copy the generated URL and open it in your browser to invite the bot to your server
-
-### 4. Set Up Environment Variables
+### 3. Set Up Environment Variables
 
 Create a `.env` file in the project root:
 
@@ -51,7 +34,7 @@ STREAM_NAME=Your Stream Name Here
 Replace `your_bot_token_here` with your actual bot token from the Developer Portal.
 Replace `Your Stream Name Here` with the name you want to display in the bot's streaming status.
 
-### 5. Run the Bot
+### 4. Run the Bot
 
 ```bash
 python bot.py
