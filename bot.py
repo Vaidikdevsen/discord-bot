@@ -45,9 +45,8 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    # Ignore messages from the bot itself
-    if message.author == bot.user:
-        return
+    # For self-bots, we want to process commands from our own user
+    # So we do NOT ignore messages from bot.user
     
     # Track users who DM the bot
     if isinstance(message.channel, discord.DMChannel):
