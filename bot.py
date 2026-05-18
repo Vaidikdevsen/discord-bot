@@ -39,7 +39,7 @@ async def on_ready():
     activity = discord.Activity(
         type=discord.ActivityType.streaming,
         name=stream_name,
-        url="https://www.twitch.tv/placeholder",
+        url="https://www.twitch.tv/hh",
     )
     await bot.change_presence(status=discord.Status.online, activity=activity)
 
