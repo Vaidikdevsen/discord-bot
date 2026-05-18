@@ -60,7 +60,7 @@ async def on_message(message):
         await asyncio.sleep(15)
         # Only reply if AFK was enabled when mentioned AND still enabled now
         if was_afk_when_mentioned and is_afk:
-            await message.reply('Hello, I am busy')
+            await message.reply('hello, i am busy rn')
     
     # Process commands
     await bot.process_commands(message)
