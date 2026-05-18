@@ -28,10 +28,14 @@ is_afk = False
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
-    # Set streaming status from .env
+    # Set online streaming presence from .env
     stream_name = os.getenv('STREAM_NAME', 'a stream')
-    activity = discord.Streaming(name=stream_name, url="https://www.twitch.tv/placeholder")
-    await bot.change_presence(activity=activity)
+    activity = discord.Activity(
+        type=discord.ActivityType.streaming,
+        name=stream_name,
+        url="https://www.twitch.tv/placeholder",
+    )
+    await bot.change_presence(status=discord.Status.online, activity=activity)
 
 @bot.event
 async def on_message(message):
