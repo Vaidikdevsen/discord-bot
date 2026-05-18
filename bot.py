@@ -11,7 +11,7 @@ load_dotenv(dotenv_path=Path(__file__).resolve().parent / '.env')
 # Create bot with command prefix and intents
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
+bot = commands.Bot(command_prefix='.', intents=intents)
 
 # Track users who have DMed the bot
 dmed_users = set()
