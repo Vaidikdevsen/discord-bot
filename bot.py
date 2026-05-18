@@ -4,14 +4,11 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env fil
-
+# Load environment variables from .env file
 load_dotenv()
 
-# Create bot with command prefix and intents
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
+# Create self-bot with command prefix and no intents
+bot = commands.Bot(command_prefix='.', help_command=None, self_bot=True)
 
 # Track users who have DMed the bot
 dmed_users = set()
@@ -221,5 +218,6 @@ async def help_command(ctx):
     except Exception as e:
         await ctx.send(f"Error in help command: {e}")
 
-# Run the bot with token from .env
+# Run the self-bot with a user token from .env
+# Ensure TOKEN is a valid Discord user token, not a bot token.
 bot.run(os.getenv('TOKEN'))
