@@ -52,12 +52,15 @@ async def on_message(message):
     if isinstance(message.channel, discord.DMChannel):
         dmed_users.add(message.author.id)
     
-    # Check if the bot is mentioned in the message
+    # Check if the bot is mentioned in the message and AFK is currently enabled
     if bot.user in message.mentions and is_afk:
+        # Capture the AFK state at the time of mention
+        was_afk_when_mentioned = is_afk
         # Wait 15 seconds
         await asyncio.sleep(15)
-        # Reply with the message
-        await message.reply('Hello, I am busy')
+        # Only reply if AFK was enabled when mentioned AND still enabled now
+        if was_afk_when_mentioned and is_afk:
+            await message.reply('Hello, I am busy')
     
     # Process commands
     await bot.process_commands(message)
