@@ -4,7 +4,8 @@ import asyncio
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables from .env fil
+
 load_dotenv()
 
 # Create bot with command prefix and intents
