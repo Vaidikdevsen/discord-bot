@@ -76,46 +76,90 @@ def bot_only():
 
 @bot.command(name='join')
 @bot_only()
-async def join(ctx, channel: discord.VoiceChannel):
-    """Bot joins a voice channel"""
+async def join(ctx, channel: discord.VoiceChannel = None):
+    """Bot joins a voice channel. If no channel is provided, joins the invoker's voice channel."""
+    status_msg = None
     try:
         status_msg = await ctx.send("Joining voice channel...")
+
+        # Fallback to author's voice channel when not provided
+        if channel is None:
+            if ctx.author.voice and ctx.author.voice.channel:
+                channel = ctx.author.voice.channel
+            else:
+                await status_msg.edit(content="✗ No channel provided and you are not in a voice channel.")
+                return
+
         if ctx.voice_client is not None:
             await ctx.voice_client.disconnect()
-        await channel.connect()
-        await status_msg.edit(content=f"✓ Joined {channel.name}")
+
+        voice_client = await channel.connect()
+
+        # Deafen and mute the self-bot after connecting
+        try:
+            await ctx.guild.change_voice_state(ctx.guild.me, channel, self_mute=True, self_deaf=True)
+        except Exception:
+            # Best-effort: ignore if permission or API difference prevents changing state
+            pass
+
+        await status_msg.edit(content=f"✓ Joined {channel.name} (self-muted & self-deafened)")
     except Exception as e:
-        await status_msg.edit(content=f"✗ Error joining channel: {e}")
+        if status_msg:
+            await status_msg.edit(content=f"✗ Error joining channel: {e}")
+        else:
+            await ctx.send(f"✗ Error joining channel: {e}")
 
 @bot.command(name='l2l')
 @bot_only()
-async def l2l(ctx, channel: discord.VoiceChannel):
-    """Bot joins a voice channel and leaves if no users are present every 20 seconds"""
+async def l2l(ctx, channel: discord.VoiceChannel = None):
+    """Bot joins a voice channel and leaves if no users are present every 20 seconds.
+    If no channel is provided, joins the invoker's voice channel."""
+    status_msg = None
     try:
         status_msg = await ctx.send("Joining voice channel...")
+
+        # Fallback to author's voice channel when not provided
+        if channel is None:
+            if ctx.author.voice and ctx.author.voice.channel:
+                channel = ctx.author.voice.channel
+            else:
+                await status_msg.edit(content="✗ No channel provided and you are not in a voice channel.")
+                return
+
         if ctx.voice_client is not None:
             await ctx.voice_client.disconnect()
-        await channel.connect()
-        await status_msg.edit(content=f"✓ Joined {channel.name} (monitoring for users)")
-        
+
+        voice_client = await channel.connect()
+
+        # Deafen and mute the self-bot after connecting
+        try:
+            await ctx.guild.change_voice_state(ctx.guild.me, channel, self_mute=True, self_deaf=True)
+        except Exception:
+            pass
+
+        await status_msg.edit(content=f"✓ Joined {channel.name} (monitoring for users; self-muted & self-deafened)")
+
         # Start background task to check for users every 20 seconds
         while True:
             await asyncio.sleep(20)
-            
+
             # Check if bot is still connected
             voice_client = ctx.guild.voice_client
             if voice_client is None:
                 break
-            
+
             # Check if there are any users in the channel (excluding the bot)
             users_in_channel = [member for member in voice_client.channel.members if not member.bot]
-            
+
             if not users_in_channel:
                 await voice_client.disconnect()
                 await status_msg.edit(content=f"✓ Left {channel.name} (no users detected)")
                 break
     except Exception as e:
-        await status_msg.edit(content=f"✗ Error in l2l command: {e}")
+        if status_msg:
+            await status_msg.edit(content=f"✗ Error in l2l command: {e}")
+        else:
+            await ctx.send(f"✗ Error in l2l command: {e}")
 
 @bot.command(name='mdm')
 @bot_only()
