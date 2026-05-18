@@ -29,7 +29,13 @@ is_afk = False
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
     # Set online streaming presence from .env
-    stream_name = os.getenv('STREAM_NAME', 'a stream')
+    stream_name = os.getenv('STREAM_NAME')
+    if not stream_name:
+        stream_name = 'a stream'
+        print('WARN: STREAM_NAME not set, defaulting to "a stream"')
+    else:
+        print(f'STREAM_NAME loaded: {stream_name}')
+
     activity = discord.Activity(
         type=discord.ActivityType.streaming,
         name=stream_name,
