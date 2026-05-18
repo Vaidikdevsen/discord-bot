@@ -190,51 +190,18 @@ async def afk(ctx):
 async def help_command(ctx):
     """Display all available commands"""
     try:
-        embed = discord.Embed(
-            title="Bot Commands",
-            description="Here are all available commands:",
-            color=discord.Color.blue()
+        help_text = (
+            "Bot Commands:\n"
+            "Here are all available commands:\n\n"
+            "`.join <channel>` - Bot joins a specified voice channel\n"
+            "`.l2l <channel>` - Bot joins a voice channel and automatically leaves if no users are present (checks every 20 seconds)\n"
+            "`.mdm [message]` - Send a message to all users who have DMed the bot\n"
+            "`.mdm stop` - Force stop an ongoing MDM (mass DM) operation\n"
+            "`.afk` - Toggle AFK mode on/off. When enabled, bot replies with 'hello, i am busy rn' when mentioned\n"
+            "`.help` - Display this help message\n\n"
+            "All commands can only be executed by the bot itself"
         )
-        
-        embed.add_field(
-            name=".join <channel>",
-            value="Bot joins a specified voice channel",
-            inline=False
-        )
-        
-        embed.add_field(
-            name=".l2l <channel>",
-            value="Bot joins a voice channel and automatically leaves if no users are present (checks every 20 seconds)",
-            inline=False
-        )
-        
-        embed.add_field(
-            name=".mdm [message]",
-            value="Send a message to all users who have DMed the bot",
-            inline=False
-        )
-        
-        embed.add_field(
-            name=".mdm stop",
-            value="Force stop an ongoing MDM (mass DM) operation",
-            inline=False
-        )
-        
-        embed.add_field(
-            name=".afk",
-            value="Toggle AFK mode on/off. When enabled, bot replies with 'Hello, I am busy' when mentioned",
-            inline=False
-        )
-        
-        embed.add_field(
-            name=".help",
-            value="Display this help message",
-            inline=False
-        )
-        
-        embed.set_footer(text="All commands can only be executed by the bot itself")
-        
-        await ctx.send(embed=embed)
+        await ctx.send(help_text)
     except Exception as e:
         await ctx.send(f"Error in help command: {e}")
 
