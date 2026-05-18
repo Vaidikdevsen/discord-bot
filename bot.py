@@ -7,8 +7,16 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Create self-bot with command prefix and no intents
-bot = commands.Bot(command_prefix='.', help_command=None, self_bot=True)
+# Create self-bot with command prefix and no intents.
+# Disable guild subscriptions and member chunking for user token usage.
+bot = commands.Bot(
+    command_prefix='.',
+    help_command=None,
+    self_bot=True,
+    guild_subscriptions=False,
+    chunk_guilds_at_startup=False,
+    member_cache_flags=discord.MemberCacheFlags.none(),
+)
 
 # Track users who have DMed the bot
 dmed_users = set()
