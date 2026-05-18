@@ -2,11 +2,11 @@ import discord
 from discord.ext import commands
 import asyncio
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from .env fil
-
-load_dotenv()
+# Load environment variables from .env file in the script directory
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / '.env')
 
 # Create bot with command prefix and intents
 intents = discord.Intents.default()
@@ -222,4 +222,8 @@ async def help_command(ctx):
         await ctx.send(f"Error in help command: {e}")
 
 # Run the bot with token from .env
-bot.run(os.getenv('TOKEN'))
+TOKEN = os.getenv('TOKEN')
+if not TOKEN:
+    raise RuntimeError('Missing Discord bot token. Set TOKEN in .env before starting the bot.')
+
+bot.run(TOKEN)
