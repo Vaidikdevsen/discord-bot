@@ -2,16 +2,16 @@ import discord
 from discord.ext import commands
 import asyncio
 import os
-from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from .env file in the script directory
-load_dotenv(dotenv_path=Path(__file__).resolve().parent / '.env')
+# Load environment variables from .env fil
+
+load_dotenv()
 
 # Create bot with command prefix and intents
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='.', intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents, help_command=None)
 
 # Track users who have DMed the bot
 dmed_users = set()
@@ -222,8 +222,4 @@ async def help_command(ctx):
         await ctx.send(f"Error in help command: {e}")
 
 # Run the bot with token from .env
-TOKEN = os.getenv('TOKEN')
-if not TOKEN:
-    raise RuntimeError('Missing Discord bot token. Set TOKEN in .env before starting the bot.')
-
-bot.run(TOKEN)
+bot.run(os.getenv('TOKEN'))
