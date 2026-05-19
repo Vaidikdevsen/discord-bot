@@ -141,7 +141,7 @@ async def l2l(ctx, channel: discord.VoiceChannel = None):
 
         # Start background task to check for users every 20 seconds
         while True:
-            await asyncio.sleep(20)
+            await asyncio.sleep(300)
 
             # Determine the current voice client robustly. Prefer the context's
             # voice client when available, then the guild's, then the local
