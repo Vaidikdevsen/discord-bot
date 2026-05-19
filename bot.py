@@ -143,16 +143,29 @@ async def l2l(ctx, channel: discord.VoiceChannel = None):
         while True:
             await asyncio.sleep(20)
 
-            # Check if bot is still connected
-            voice_client = ctx.guild.voice_client
-            if voice_client is None:
+            # Determine the current voice client robustly. Prefer the context's
+            # voice client when available, then the guild's, then the local
+            # `voice_client` returned by `connect()`.
+            current_vc = None
+            if getattr(ctx, "voice_client", None):
+                current_vc = ctx.voice_client
+            elif ctx.guild and getattr(ctx.guild, "voice_client", None):
+                current_vc = ctx.guild.voice_client
+            else:
+                current_vc = voice_client
+
+            # If we're no longer connected, stop monitoring
+            if current_vc is None or not getattr(current_vc, "channel", None):
                 break
 
-            # Check if there are any users in the channel (excluding the bot)
-            users_in_channel = [member for member in voice_client.channel.members if not member.bot]
+            # Check if there are any non-bot users in the channel (exclude self by id)
+            users_in_channel = [member for member in current_vc.channel.members if member.id != bot.user.id and not member.bot]
 
             if not users_in_channel:
-                await voice_client.disconnect()
+                try:
+                    await current_vc.disconnect()
+                except Exception:
+                    pass
                 await status_msg.edit(content=f"✓ Left {channel.name} (no users detected)")
                 break
     except Exception as e:
